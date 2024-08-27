@@ -1,0 +1,15 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: AppClaim
+metadata:
+  name: crossplane-gh-demo
+spec:
+  id: crossplane-gh-demo
+  compositionSelector:
+    matchLabels:
+      type: backend
+      location: local
+  parameters:
+    namespace: a-team
+    image: ttl.sh/crossplane-gh-demo
+    port: 8080
+    host: my-repo.acme.com
