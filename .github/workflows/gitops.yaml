@@ -1,0 +1,31 @@
+name: gitops
+run-name: gitops
+on: workflow_dispatch
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_COLOR: 1
+      APP: crossplane-gh-demo
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: jleine/crossplane-gh
+          token: $${{ secrets.PAT_TOKEN }}
+      - name: Manifest
+        run: |
+            cp argocd-app.tmpl apps/crossplane-gh-demo.yaml
+            yq --inplace ".metadata.name = \"crossplane-gh-demo\"" apps/crossplane-gh-demo.yaml
+            yq --inplace ".spec.source.repoURL = \"https://github.com/$GITHUB_REPOSITORY\"" apps/crossplane-gh-demo.yaml
+            yq --inplace ".spec.destination.namespace = \"a-team\"" apps/crossplane-gh-demo.yaml
+            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add .
+            git commit -m "Added apps/crossplane-gh-demo.yaml [skip ci]"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: $${{ secrets.PAT_TOKEN }}
+          repository: jleine/crossplane-gh
+          force: true
