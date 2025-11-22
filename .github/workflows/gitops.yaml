@@ -9,7 +9,7 @@ jobs:
       APP: crossplane-gh-demo
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: jleine/crossplane-gh
           token: $${{ secrets.PAT_TOKEN }}
