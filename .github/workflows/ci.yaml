@@ -15,7 +15,7 @@ jobs:
         with:
           version: v0.8.0
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Build and push
